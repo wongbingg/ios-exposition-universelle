@@ -1,12 +1,13 @@
 //
-//  Expo1900 - MainViewController.swift
-//  Created by yagom. 
-//  Copyright © yagom academy. All rights reserved.
-// 
+//  MainView.swift
+//  Expo1900
+//
+//  Created by 이원빈 on 2022/06/24.
+//
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainView: UIView {
     
     let expositionDataManager = ExpositionDataManager()
     let numberFormatter = NumberFormatter()
@@ -15,13 +16,13 @@ class MainViewController: UIViewController {
         return expositionDataManager.fetchData()
     }()
     
-    lazy var scrollView: UIScrollView = {
+    let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    lazy var stackView: UIStackView = {
+    let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -128,40 +129,31 @@ class MainViewController: UIViewController {
         return makeImageView(named: "flag", x: 60, y: 40)
     }()
     
-    lazy var enterButton: UIButton = {
+    let enterButton: UIButton = {
         let enterButton = UIButton()
         enterButton.translatesAutoresizingMaskIntoConstraints = false
         enterButton.setTitle("한국의 출품작 보러가기", for: .normal)
         enterButton.setTitleColor(.systemBlue, for: .normal)
-        enterButton.addTarget(self, action: #selector(enterButtonDidTapped(_:)), for: .touchUpInside)
         return enterButton
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private var rootViewController: UIViewController?
+    
+    init(_ rootViewController: UIViewController) {
+        super.init(frame: .null)
+        self.rootViewController = rootViewController
+        
         addAllSubviews()
         designateScrollViewConstraints()
         designateStackViewConstraints()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        designateNavigationSetting()
-        AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        AppUtility.lockOrientation(.all)
-    }
-    
-    @objc func enterButtonDidTapped(_ sender: UIButton) {
-        let itemTableViewController = ItemTableViewController()
-        self.navigationController?.pushViewController(itemTableViewController, animated: true)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
-private extension MainViewController {
+private extension MainView {
     
     func makeHorizontalStackView() -> UIStackView {
         let stackView = UIStackView()
@@ -189,22 +181,9 @@ private extension MainViewController {
         return imageView
     }
     
-    func designateScrollViewConstraints() {
-        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-    
-    func designateStackViewConstraints() {
-        stackView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -10).isActive = true
-    }
-    
     func addAllSubviews() {
-        view.addSubview(scrollView)
+        guard let rootViewController = rootViewController else { return }
+        rootViewController.view.addSubview(scrollView)
         
         scrollView.addSubview(stackView)
         
@@ -230,8 +209,18 @@ private extension MainViewController {
         enterButtonStackView.addArrangedSubview(rightImageView)
     }
     
-    func designateNavigationSetting() {
-        navigationItem.title = "메인"
-        navigationController?.isNavigationBarHidden = true
+    func designateScrollViewConstraints() {
+        guard let rootViewController = rootViewController else { return }
+        scrollView.leadingAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: rootViewController.view.topAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor).isActive = true
+    }
+    
+    func designateStackViewConstraints() {
+        stackView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+        stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -10).isActive = true
     }
 }

@@ -1,22 +1,21 @@
 //
-//  DetailViewController.swift
+//  DetailView.swift
 //  Expo1900
 //
-//  Created by 웡빙, bonf on 2022/06/16.
+//  Created by 이원빈 on 2022/06/24.
 //
 
 import UIKit
 
-class DetailViewController: UIViewController {
-    var itemTitle: String?
+class DetailView: UIView {
     
-    lazy var scrollView: UIScrollView = {
+    let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    lazy var stackView: UIStackView = {
+    let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -42,23 +41,31 @@ class DetailViewController: UIViewController {
         return label
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    private var rootViewController: UIViewController?
+    
+    init(_ rootViewController: UIViewController) {
+        super.init(frame: .null)
+        self.rootViewController = rootViewController
         addAllSubviews()
         designateViewBackgroundColor()
-        designateNavigationSetting()
         designateScrollViewConstraints()
         designateStackViewConstraints()
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
-extension DetailViewController {
+extension DetailView {
     
     private func designateScrollViewConstraints() {
-        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        guard let rootViewController = rootViewController else { return }
+        scrollView.leadingAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: rootViewController.view.topAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor).isActive = true
     }
     
     private func designateStackViewConstraints() {
@@ -68,23 +75,12 @@ extension DetailViewController {
         stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
     }
     
-    private func designateNavigationSetting() {
-        navigationItem.title = itemTitle
-    }
-    
     private func designateViewBackgroundColor() {
-        view.backgroundColor = .systemBackground
-    }
-    
-    func updateData(from model: Item?) {
-        guard let model = model else { return }
-        itemTitle = model.name
-        itemImageView.image = UIImage(named: model.imageName)
-        descriptionLabel.text = model.description
+        rootViewController?.view.backgroundColor = .systemBackground
     }
     
     private func addAllSubviews() {
-        self.view.addSubview(scrollView)
+        rootViewController?.view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(itemImageView)
         stackView.addArrangedSubview(descriptionLabel)
