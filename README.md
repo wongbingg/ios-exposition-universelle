@@ -154,13 +154,13 @@ title.text 내의 "(" 를 "\n("로 변경하도록 구현했다.
     
   **해석:** `Array<Any>` 를 decode 하는 것을 예상 했지만,`dictionary` 가 들어왔다 ! 
     decode 메서드에 type파라미터에 배열이 들어갔기 때문이었다. 배열에서 딕셔너리 타입으로 바꿔주니 오류가 해결 되었다. 대괄호 하나 차이로 인해 오류가 났던 것이었다. 파일로 직접 열어서 확인해보니, "items.json" 에선 [{}] 배열 타입의 json 이 들어있고, "exposition_universelle_1900.json" 에선 {} 딕셔너리 타입의 json 이 들어있었다. 
-    ```swift=
+    ```swift
     func decode<T>(_ type: T.Type, from data: Data) throws -> T where T : Decodable
     ```
 
 ### - 사진의 크기조절 
 stackView에 사진과 버튼을 addArrangedSubview 해줬을 때 사진만 크게 나와 버튼을 클릭할 수 없는 문제가 발생했다. 사진의 크기를 resize하여 문제를 해결했다.
-```swift=
+```swift
 func resizeImage(image: UIImage, width: CGFloat, height: CGFloat) -> UIImage? {
     UIGraphicsBeginImageContext(CGSize(width: width, height: height))
     image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
@@ -189,7 +189,7 @@ imageView.heightAnchor.constraint(equalToConstant: y).isActive = true
 ![](https://i.imgur.com/XL5SyIi.png)
 contentView가 아닌 self.heightAnchor를 이용하였더니 해결되었다.
 ![](https://i.imgur.com/Oy88MCE.png)
-self.contentView.heightAnchor와 self.heightAnchor의 차이 =같은 계층에 있는 contentView에 제약을 걸어주게 되면 imageView 크기와 함께 늘어나게 되어서 안되고, 부모 계층에 있는 itemTableViewCell의 heightAnchor에 제약을 맞춰 주었더니 해결이 되었다.
+self.contentView.heightAnchor와 self.heightAnchor의 차이 => 같은 계층에 있는 contentView에 제약을 걸어주게 되면 imageView 크기와 함께 늘어나게 되어서 안되고, 부모 계층에 있는 itemTableViewCell의 heightAnchor에 제약을 맞춰 주었더니 해결이 되었다.
 
 <table>
     <tr><td valign="top" width="30%" align="center">
@@ -205,6 +205,9 @@ self.contentView.heightAnchor와 self.heightAnchor의 차이 =같은 계층에 �
     </td><td valign="top" width="30%">
 <img src="https://i.imgur.com/juYmK7f.png" width="220" height="440"/>
     </td></tr></table>                                           
-                                                              
+<img width="1333" alt="스크린샷 2022-06-25 오후 1 31 27" src="https://user-images.githubusercontent.com/95671495/175768631-6ee1ca70-9bd8-4b31-8383-5296fa1bfc02.png">
+<img width="1333" alt="스크린샷 2022-06-25 오후 1 32 13" src="https://user-images.githubusercontent.com/95671495/175768636-f4617bf3-12f3-4b55-96cf-619d7e0a25ac.png">                                                              
 </div>
-</details>  
+</details>
+
+
