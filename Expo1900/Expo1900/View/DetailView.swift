@@ -7,15 +7,15 @@
 
 import UIKit
 
-class DetailView: UIView {
+final class DetailView: UIView {
     
-    let scrollView: UIScrollView = {
+    private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -24,15 +24,15 @@ class DetailView: UIView {
         return stackView
     }()
     
-    let itemImageView: UIImageView = {
+    private let itemImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 200).isActive = true
         return imageView
     }()
-
-    let descriptionLabel: UILabel = {
+    
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.adjustsFontForContentSizeCategory = true
@@ -40,15 +40,10 @@ class DetailView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
-
-    private var rootViewController: UIViewController?
     
-    init(_ rootViewController: UIViewController) {
+    init() {
         super.init(frame: .null)
-        self.rootViewController = rootViewController
         addAllSubviews()
-        designateViewBackgroundColor()
         designateScrollViewConstraints()
         designateStackViewConstraints()
     }
@@ -56,31 +51,45 @@ class DetailView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setupData(with model: Item) {
+        itemImageView.image = UIImage(named: model.imageName)
+        descriptionLabel.text = model.description
+    }
 }
 
 extension DetailView {
     
     private func designateScrollViewConstraints() {
-        guard let rootViewController = rootViewController else { return }
-        scrollView.leadingAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: rootViewController.view.topAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: rootViewController.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: rootViewController.view.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
     }
     
     private func designateStackViewConstraints() {
-        stackView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
-    }
-    
-    private func designateViewBackgroundColor() {
-        rootViewController?.view.backgroundColor = .systemBackground
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(
+                equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor,
+                constant: 10
+            ),
+            stackView.topAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.topAnchor
+            ),
+            stackView.trailingAnchor.constraint(
+                equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor,
+                constant: -10
+            ),
+            stackView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor
+            )
+        ])
     }
     
     private func addAllSubviews() {
-        rootViewController?.view.addSubview(scrollView)
+        addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(itemImageView)
         stackView.addArrangedSubview(descriptionLabel)
