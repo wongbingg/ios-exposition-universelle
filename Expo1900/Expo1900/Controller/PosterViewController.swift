@@ -12,6 +12,7 @@ final class PosterViewController: UIViewController {
     // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupInitialView()
         setupMainView()
     }
     
@@ -27,15 +28,20 @@ final class PosterViewController: UIViewController {
     }
     
     // MARK: - Methods
+    func setupInitialView() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(posterView)
+        posterView.setupData(with: ExpositionDataManager.fetchData()!)
+    }
+    
     func setupMainView() {
-//        posterView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            posterView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-//            posterView.topAnchor.constraint(equalTo: view.topAnchor),
-//            posterView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-//            posterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        ])
-        posterView.frame = view.bounds
+        posterView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            posterView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            posterView.topAnchor.constraint(equalTo: view.topAnchor),
+            posterView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            posterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         posterView.enterButton.addTarget(self, action: #selector(enterButtonDidTapped(_:)), for: .touchUpInside)
     }
     
