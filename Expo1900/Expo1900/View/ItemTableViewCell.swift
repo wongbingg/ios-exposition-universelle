@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ItemTableViewCell: UITableViewCell {
+final class ItemTableViewCell: UITableViewCell {
 
-    lazy var labelStackView: UIStackView = {
+    private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -19,7 +19,7 @@ class ItemTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    let nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         label.adjustsFontForContentSizeCategory = true
@@ -28,7 +28,7 @@ class ItemTableViewCell: UITableViewCell {
         return label
     }()
     
-    let shortDescriptionLabel: UILabel = {
+    private let shortDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .callout)
         label.adjustsFontForContentSizeCategory = true
@@ -37,7 +37,7 @@ class ItemTableViewCell: UITableViewCell {
         return label
     }()
     
-    let itemImageView: UIImageView = {
+    private let itemImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -54,30 +54,34 @@ class ItemTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-extension ItemTableViewCell{
     
-    private func designateItemImageViewConstraints() {
-        itemImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
-        itemImageView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.2).isActive = true
-        itemImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10).isActive = true
-        itemImageView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-    }
-    
-    private func designateLabelStackViewConstraints() {
-        labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
-        labelStackView.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 10).isActive = true
-        labelStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10).isActive = true
-        labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
-    }
-    
-    func updateData(from model: Item?) {
+    func setupData(with model: Item?) {
         guard let model = model else { return }
         nameLabel.text = "\(String(describing: model.name))"
         shortDescriptionLabel.text = "\(String(describing: model.shortDescription))"
         itemImageView.image = UIImage(named: model.imageName)
         accessoryType = .disclosureIndicator
+    }
+}
+
+extension ItemTableViewCell{
+    
+    private func designateItemImageViewConstraints() {
+        NSLayoutConstraint.activate([
+            itemImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            itemImageView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.2),
+            itemImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            itemImageView.heightAnchor.constraint(equalTo: self.heightAnchor)
+        ])
+    }
+    
+    private func designateLabelStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+            labelStackView.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 10),
+            labelStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
+        ])
     }
     
     private func addAllSubviews() {
