@@ -1,14 +1,15 @@
 //
-//  Expo1900 - MainViewController.swift
+//  Expo1900 - PosterViewController.swift
 //  Created by yagom. 
 //  Copyright © yagom academy. All rights reserved.
 // 
 
 import UIKit
 
-class MainViewController: UIViewController {
-    private var mainView: MainView?
+final class PosterViewController: UIViewController {
+    private let posterView = PosterView()
     
+    // MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMainView()
@@ -25,9 +26,17 @@ class MainViewController: UIViewController {
         AppUtility.lockOrientation(.all)
     }
     
+    // MARK: - Methods
     func setupMainView() {
-        mainView = MainView(self)
-        mainView?.enterButton.addTarget(self, action: #selector(enterButtonDidTapped(_:)), for: .touchUpInside)
+//        posterView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            posterView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//            posterView.topAnchor.constraint(equalTo: view.topAnchor),
+//            posterView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//            posterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//        ])
+        posterView.frame = view.bounds
+        posterView.enterButton.addTarget(self, action: #selector(enterButtonDidTapped(_:)), for: .touchUpInside)
     }
     
     func designateNavigationSetting() {

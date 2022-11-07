@@ -5,7 +5,6 @@
 //  Created by 웡빙, bonf on 2022/06/13.
 //
 
-import Foundation
 import UIKit
 
 struct ItemDataManager {

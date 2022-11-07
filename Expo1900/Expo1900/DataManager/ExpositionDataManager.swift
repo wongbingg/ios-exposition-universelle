@@ -5,12 +5,11 @@
 //  Created by 웡빙, bonf on 2022/06/14.
 //
 
-import Foundation
 import UIKit
 
 struct ExpositionDataManager {
     
-    func fetchData() -> Exposition? {
+    static func fetchData() -> Exposition? {
         guard let filePath = NSDataAsset.init(name: "exposition_universelle_1900") else {
             return nil
         }
