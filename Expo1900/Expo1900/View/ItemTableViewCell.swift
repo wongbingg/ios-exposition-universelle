@@ -8,7 +8,7 @@
 import UIKit
 
 final class ItemTableViewCell: UITableViewCell {
-
+    
     private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,9 +64,9 @@ final class ItemTableViewCell: UITableViewCell {
     }
 }
 
-extension ItemTableViewCell{
+private extension ItemTableViewCell{
     
-    private func designateItemImageViewConstraints() {
+    func designateItemImageViewConstraints() {
         NSLayoutConstraint.activate([
             itemImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             itemImageView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.2),
@@ -75,7 +75,7 @@ extension ItemTableViewCell{
         ])
     }
     
-    private func designateLabelStackViewConstraints() {
+    func designateLabelStackViewConstraints() {
         NSLayoutConstraint.activate([
             labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
             labelStackView.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 10),
@@ -84,7 +84,7 @@ extension ItemTableViewCell{
         ])
     }
     
-    private func addAllSubviews() {
+    func addAllSubviews() {
         self.contentView.addSubview(itemImageView)
         self.contentView.addSubview(labelStackView)
         labelStackView.addArrangedSubview(nameLabel)

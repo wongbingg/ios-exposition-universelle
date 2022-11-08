@@ -44,8 +44,8 @@ final class DetailView: UIView {
     init() {
         super.init(frame: .null)
         addAllSubviews()
-        designateScrollViewConstraints()
-        designateStackViewConstraints()
+        setupScrollViewConstraints()
+        setupStackViewConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -58,9 +58,9 @@ final class DetailView: UIView {
     }
 }
 
-extension DetailView {
+private extension DetailView {
     
-    private func designateScrollViewConstraints() {
+    func setupScrollViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor),
@@ -69,7 +69,7 @@ extension DetailView {
         ])
     }
     
-    private func designateStackViewConstraints() {
+    func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(
                 equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor,
@@ -88,7 +88,7 @@ extension DetailView {
         ])
     }
     
-    private func addAllSubviews() {
+    func addAllSubviews() {
         addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubview(itemImageView)

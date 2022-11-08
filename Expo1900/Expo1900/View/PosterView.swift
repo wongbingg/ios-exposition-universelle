@@ -150,8 +150,8 @@ final class PosterView: UIView {
     init() {
         super.init(frame: .null)
         addAllSubviews()
-        designateScrollViewConstraints()
-        designateStackViewConstraints()
+        setupScrollViewConstraints()
+        setupStackViewConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -215,7 +215,7 @@ private extension PosterView {
         enterButtonStackView.addArrangedSubview(rightImageView)
     }
     
-    func designateScrollViewConstraints() {
+    func setupScrollViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor),
@@ -224,7 +224,7 @@ private extension PosterView {
         ])
     }
     
-    func designateStackViewConstraints() {
+    func setupStackViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(
                 equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor,

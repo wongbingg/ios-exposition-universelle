@@ -19,7 +19,7 @@ final class PosterViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-        designateNavigationSetting()
+        setupNavigation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -28,13 +28,13 @@ final class PosterViewController: UIViewController {
     }
     
     // MARK: - Methods
-    func setupInitialView() {
+    private func setupInitialView() {
         view.backgroundColor = .systemBackground
         view.addSubview(posterView)
         posterView.setupData(with: ExpositionDataManager.fetchData()!)
     }
     
-    func setupMainView() {
+    private func setupMainView() {
         posterView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             posterView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -42,16 +42,23 @@ final class PosterViewController: UIViewController {
             posterView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             posterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        posterView.enterButton.addTarget(self, action: #selector(enterButtonDidTapped(_:)), for: .touchUpInside)
+        posterView.enterButton.addTarget(
+            self,
+            action: #selector(enterButtonDidTapped(_:)),
+            for: .touchUpInside
+        )
     }
     
-    func designateNavigationSetting() {
+    private func setupNavigation() {
         self.navigationItem.title = "메인"
         self.navigationController?.isNavigationBarHidden = true
     }
     
-    @objc func enterButtonDidTapped(_ sender: UIButton) {
+    @objc private func enterButtonDidTapped(_ sender: UIButton) {
         let itemTableViewController = ItemTableViewController()
-        self.navigationController?.pushViewController(itemTableViewController, animated: true)
+        self.navigationController?.pushViewController(
+            itemTableViewController,
+            animated: true
+        )
     }
 }
